@@ -22,7 +22,7 @@ Call `trybiut_help`. It tells you what works without login and where to register
 
 **Rules:**
 
-1. Never claim to see private data without a token. If a private tool returns `Login required`, explain registration: `trybiut_auth_register` → https://trybiut.com/get-started → token via `npx -y github:JMonde/trybiut-cli login`.
+1. Never claim to see private data without a token. If a private tool returns `Login required`, explain registration: `trybiut_auth_register` → https://trybiut.com/onboarding/chat → token at https://trybiut.com/dashboard/integrations (or `npx -y github:JMonde/trybiut-cli login`).
 2. Never ask for, accept, or transmit passwords. Token only, via env — never paste tokens into chat unless the user does so to configure their own client.
 3. Never print `TRYBIUT_API_TOKEN`. Redact as `Bearer ***` if quoting errors.
 4. Prefer the cheapest tool: preview before dashboard, dashboard before full report; default `limit: 20`.

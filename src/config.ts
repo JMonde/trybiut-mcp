@@ -17,14 +17,14 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): TrybiutConfig 
 
 /** Real pages on trybiut.com (verified against pages/). */
 export const PUBLIC_URLS = {
-  getStarted: 'https://trybiut.com/get-started',
+  getStarted: 'https://trybiut.com/onboarding/chat',
   login: 'https://trybiut.com/connect/login',
   pricing: 'https://trybiut.com/pricing',
   developers: 'https://trybiut.com/developers',
   dashboard: 'https://trybiut.com/dashboard',
+  integrations: 'https://trybiut.com/dashboard/integrations',
 } as const;
 
 export const TOKEN_HELP =
-  'Get a token with the TryBiut CLI: `npx -y github:JMonde/trybiut-cli login` ' +
-  '(stores a local session, no dashboard page needed), then set TRYBIUT_API_TOKEN. ' +
-  'Create your account first at https://trybiut.com/get-started';
+  'Create your account at https://trybiut.com/onboarding/chat, then create a token at https://trybiut.com/dashboard/integrations (API Tokens tab) ' +
+  'or via CLI: `npx -y github:JMonde/trybiut-cli login`. Set TRYBIUT_API_TOKEN and restart the MCP client.';

@@ -8,15 +8,16 @@
 
 ## Getting a token
 
-TryBiut has no dashboard token page yet (tracked as a pending feature). Until then:
+Create your account at https://trybiut.com/onboarding/chat (or log in at https://trybiut.com/connect/login), then create a token at https://trybiut.com/dashboard/integrations (API Tokens tab). The plain token is shown once — copy it immediately.
+
+CLI alternative:
 
 ```bash
 npx -y github:JMonde/trybiut-cli login
 ```
 
-1. Create your account at https://trybiut.com/get-started (or log in at https://trybiut.com/connect/login).
-2. Run the CLI `login` command and enter your email/password. Credentials are verified against Supabase Auth and the password is never stored.
-3. Copy the printed access token into your MCP client config as `TRYBIUT_API_TOKEN` and restart.
+1. Run the CLI `login` command and enter your email/password. Credentials are verified against Supabase Auth and the password is never stored.
+2. Copy the printed token into your MCP client config as `TRYBIUT_API_TOKEN` and restart.
 
 The MCP tool `trybiut_auth_register` explains the same steps to the agent.
 The MCP **never** asks for, receives, or stores passwords — only the token.
@@ -42,7 +43,7 @@ Local dev variant: `"command": "node"`, `"args": ["/absolute/path/trybiut-mcp/di
 
 ## Rotation and revocation
 
-- Change your password or run `trybiut logout` in the CLI to invalidate the session.
+- Revoke a token at https://trybiut.com/dashboard/integrations or run `trybiut logout` in the CLI.
 - After that, private tools immediately return `Login required` (API answers `401`).
 
 ## `TRYBIUT_REQUIRE_SUBSCRIPTION`

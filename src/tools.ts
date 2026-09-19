@@ -119,7 +119,7 @@ export const TOOLS: ToolDef[] = [
     run: async (client, args) => ({
       step1: `Create your account at ${PUBLIC_URLS.getStarted}${args.email ? ` (${args.email})` : ''}.`,
       step2: `Log in at ${PUBLIC_URLS.login}.`,
-      step3: `Obtain a token by running: npx -y github:JMonde/trybiut-cli login`,
+      step3: `Create a token at ${PUBLIC_URLS.integrations} (API Tokens tab) — the plain token is shown once. Or run: npx -y github:JMonde/trybiut-cli login`,
       step4: 'Set TRYBIUT_API_TOKEN with that token, restart the MCP client, and call trybiut_me to verify.',
       security: 'The MCP never receives or stores passwords. Only the API token, kept locally in your MCP config.',
     }),

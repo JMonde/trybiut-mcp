@@ -5,8 +5,7 @@ export class AuthRequiredError extends Error {
   constructor() {
     super(
       'Login required: set TRYBIUT_API_TOKEN to use this tool. ' +
-        'Create an account at https://trybiut.com/get-started, then run ' +
-        '`npx -y github:JMonde/trybiut-cli login` to obtain a token.'
+        'Create an account at https://trybiut.com/onboarding/chat, then create a token at https://trybiut.com/dashboard/integrations.'
     );
     this.name = 'AuthRequiredError';
   }

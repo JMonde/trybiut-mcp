@@ -18,10 +18,10 @@
 
 <p align="center">
   <a href="https://trybiut.com">trybiut.com</a> ·
-  <a href="https://trybiut.com/get-started">Get started</a> ·
+  <a href="https://trybiut.com/onboarding/chat">Onboarding</a> ·
   <a href="https://trybiut.com/connect/login">Login</a> ·
-  <a href="https://trybiut.com/pricing">Plans</a> ·
-  <a href="https://trybiut.com/developers">Developers</a>
+  <a href="https://trybiut.com/dashboard/integrations">Integrations</a> ·
+  <a href="https://trybiut.com/pricing">Plans</a>
 </p>
 
 ---
@@ -79,12 +79,10 @@ claude mcp add trybiut --env TRYBIUT_BASE_URL=https://trybiut.com -- npx -y gith
 
 ## Getting a token
 
-There is no dashboard token page yet. Use the TryBiut CLI:
-
-1. Create your account: https://trybiut.com/get-started
-2. Run `npx -y github:JMonde/trybiut-cli login` and enter your TryBiut email/password (verified against Supabase Auth; the password is never stored).
-3. Copy the printed token into `TRYBIUT_API_TOKEN` and restart the MCP client.
-4. Ask the agent to verify with `trybiut_me`.
+1. Create your account: https://trybiut.com/onboarding/chat
+2. Go to https://trybiut.com/dashboard/integrations → API Tokens, create a token (shown once — copy it).
+3. Or via CLI: `npx -y github:JMonde/trybiut-cli login` (password is never stored).
+4. Paste the token into `TRYBIUT_API_TOKEN` and restart the MCP client, then verify with `trybiut_me`.
 
 The agent can guide you too: the `trybiut_auth_register` tool returns these steps in chat.
 
@@ -158,7 +156,7 @@ trybiut-mcp/
 
 - Private tools call `requireAuth()` before any network: no login, no data leaves the machine.
 - The token only goes to `TRYBIUT_BASE_URL` as `Bearer`, redacted in errors (`Bearer ***`).
-- Revoking the session (password change / CLI `logout`) cuts access immediately.
+- Revoking the token at https://trybiut.com/dashboard/integrations (or `trybiut logout`) cuts access immediately.
 
 ## Contributing
 
