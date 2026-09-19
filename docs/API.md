@@ -1,4 +1,4 @@
-# 🌐 TryBiut MCP — API notes
+# TryBiut MCP — API notes
 
 Base: `TRYBIUT_BASE_URL` (default `https://trybiut.com`).
 
@@ -24,8 +24,8 @@ Base: `TRYBIUT_BASE_URL` (default `https://trybiut.com`).
 | Code | Meaning in MCP |
 |---|---|
 | 200 | JSON forwarded to the agent |
-| 401 | → `🔒 Login required` |
-| 402/403 | → `💳 Active subscription required` |
-| 4xx/5xx | → `❌ TryBiut API <code> on <path>: <body…>` |
+| 401 | → `Login required` |
+| 402/403 | → `Active subscription required` |
+| 4xx/5xx | → `Error: TryBiut API <code> on <path>: <body…>` |
 
-Full product surface: https://trybiut.com/docs
+Product surface: https://trybiut.com/developers

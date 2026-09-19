@@ -4,8 +4,9 @@ import { loadConfig, type TrybiutConfig } from './config.js';
 export class AuthRequiredError extends Error {
   constructor() {
     super(
-      '🔒 Login required: set TRYBIUT_API_TOKEN to use this tool. ' +
-        'Create an account at https://trybiut.com/register and copy your token from https://trybiut.com/dashboard/api-tokens'
+      'Login required: set TRYBIUT_API_TOKEN to use this tool. ' +
+        'Create an account at https://trybiut.com/get-started, then run ' +
+        '`npx -y github:JMonde/trybiut-cli login` to obtain a token.'
     );
     this.name = 'AuthRequiredError';
   }
@@ -14,7 +15,7 @@ export class AuthRequiredError extends Error {
 export class SubscriptionRequiredError extends Error {
   constructor() {
     super(
-      '💳 Active subscription required: this tool needs a paid TryBiut plan. ' +
+      'Active subscription required: this tool needs a paid TryBiut plan. ' +
         'See https://trybiut.com/pricing — basic public tools still work without it.'
     );
     this.name = 'SubscriptionRequiredError';

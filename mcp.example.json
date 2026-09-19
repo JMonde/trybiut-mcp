@@ -2,7 +2,7 @@
   "mcpServers": {
     "trybiut": {
       "command": "npx",
-      "args": ["-y", "@trybiut/mcp"],
+      "args": ["-y", "github:JMonde/trybiut-mcp"],
       "env": {
         "TRYBIUT_BASE_URL": "https://trybiut.com",
         "TRYBIUT_API_TOKEN": "PASTE_YOUR_TOKEN_HERE"

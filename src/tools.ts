@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { TrybiutClient, AuthRequiredError, SubscriptionRequiredError } from './client.js';
-import { PUBLIC_URLS } from './config.js';
+import { PUBLIC_URLS, TOKEN_HELP } from './config.js';
 
 /**
  * Tool catalogue.
@@ -16,9 +16,6 @@ export interface ToolDef {
   run: (client: TrybiutClient, args: any) => Promise<unknown>;
 }
 
-const ok = (data: unknown) => ({ content: [{ type: 'text', text: JSON.stringify(data, null, 2) }] });
-export const toToolResult = ok;
-
 export function formatGateError(err: unknown) {
   if (err instanceof AuthRequiredError || err instanceof SubscriptionRequiredError) {
     return {
@@ -26,16 +23,16 @@ export function formatGateError(err: unknown) {
       isError: true,
     };
   }
-  return { content: [{ type: 'text', text: `❌ ${err instanceof Error ? err.message : String(err)}` }], isError: true };
+  return { content: [{ type: 'text', text: `Error: ${err instanceof Error ? err.message : String(err)}` }], isError: true };
 }
 
 export const TOOLS: ToolDef[] = [
   // ── PUBLIC (no login) ──────────────────────────────────────────
   {
     name: 'trybiut_status',
-    title: '🟢 Service status',
+    title: 'Service status',
     auth: false,
-    description: 'Check that trybiut.com API is reachable. No login needed.',
+    description: 'Check that the trybiut.com API is reachable. No login needed.',
     schema: {},
     run: async (client) => {
       const started = Date.now();
@@ -49,7 +46,7 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'trybiut_tax_preview',
-    title: '🧮 Tax saving preview',
+    title: 'Tax saving preview',
     auth: false,
     description: 'Basic estimate of yearly tax savings. Public demo endpoint, no login needed.',
     schema: {
@@ -62,7 +59,7 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'trybiut_tax_calculate',
-    title: '🧾 Tax calculation',
+    title: 'Tax calculation',
     auth: false,
     description: 'Basic tax breakdown for an amount/region/business type. No login needed.',
     schema: {
@@ -80,7 +77,7 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'trybiut_tax_calendar',
-    title: '📅 Tax calendar',
+    title: 'Tax calendar',
     auth: false,
     description: 'Public tax obligations calendar for a year. No login needed.',
     schema: { year: z.number().int().min(2020).max(2100).default(new Date().getFullYear()) },
@@ -88,7 +85,7 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'trybiut_pricing_countries',
-    title: '🌍 Pricing coverage',
+    title: 'Pricing coverage',
     auth: false,
     description: 'List countries covered by the pricing/market-data module. No login needed.',
     schema: {},
@@ -96,41 +93,42 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'trybiut_help',
-    title: '❓ Help & registration',
+    title: 'Help and registration',
     auth: false,
     description: 'How to register, log in and get an API token; what works without subscription.',
     schema: {},
     run: async (client) => ({
-      message: '👋 Welcome to TryBiut — taxes & finances for freelancers and SMEs.',
-      register: PUBLIC_URLS.register,
+      message: 'Welcome to TryBiut — taxes and finances for freelancers and SMEs.',
+      getStarted: PUBLIC_URLS.getStarted,
       login: PUBLIC_URLS.login,
-      getToken: PUBLIC_URLS.apiTokens,
       pricing: PUBLIC_URLS.pricing,
+      developers: PUBLIC_URLS.developers,
+      token: TOKEN_HELP,
       freeWithoutLogin: ['trybiut_status', 'trybiut_tax_preview', 'trybiut_tax_calculate', 'trybiut_tax_calendar', 'trybiut_pricing_countries'],
       withLoginToken: ['trybiut_me', 'trybiut_subscription', 'trybiut_dashboard_taxes', 'trybiut_invoices_list', 'trybiut_movements_list', 'trybiut_tax_history', 'trybiut_reports_taxes'],
-      note: '🔒 Private data tools NEVER work without TRYBIUT_API_TOKEN. The MCP never asks for your password — only the token.',
+      note: 'Private data tools never work without TRYBIUT_API_TOKEN. The MCP never asks for your password — only the token.',
       baseUrl: client.config.baseUrl,
     }),
   },
   {
     name: 'trybiut_auth_register',
-    title: '📝 Register account',
+    title: 'Register account',
     auth: false,
-    description: 'Start registration on trybiut.com so you can later use private tools. Returns the signup link + steps.',
+    description: 'Start registration on trybiut.com so you can later use private tools. Returns the signup link and steps.',
     schema: { email: z.string().email().optional().describe('Optional: only echoed back in the instructions, never sent anywhere.') },
     run: async (client, args) => ({
-      step1: `Open ${PUBLIC_URLS.register} and create your account${args.email ? ` for ${args.email}` : ''}.`,
+      step1: `Create your account at ${PUBLIC_URLS.getStarted}${args.email ? ` (${args.email})` : ''}.`,
       step2: `Log in at ${PUBLIC_URLS.login}.`,
-      step3: `Copy your token from ${PUBLIC_URLS.apiTokens} into TRYBIUT_API_TOKEN (env) and restart the MCP.`,
-      step4: 'Call trybiut_me to verify the login.',
-      security: '⚠️ The MCP never receives or stores passwords. Only the API token, kept locally in your MCP config.',
+      step3: `Obtain a token by running: npx -y github:JMonde/trybiut-cli login`,
+      step4: 'Set TRYBIUT_API_TOKEN with that token, restart the MCP client, and call trybiut_me to verify.',
+      security: 'The MCP never receives or stores passwords. Only the API token, kept locally in your MCP config.',
     }),
   },
 
   // ── PRIVATE (login required) ───────────────────────────────────
   {
     name: 'trybiut_me',
-    title: '👤 Who am I',
+    title: 'Who am I',
     auth: true,
     description: 'Verify the API token and return the logged-in user profile. Requires login.',
     schema: {},
@@ -141,25 +139,24 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'trybiut_subscription',
-    title: '💳 Subscription status',
+    title: 'Subscription status',
     auth: true,
     description: 'Check the current plan/subscription of the logged-in user. Requires login.',
     schema: {},
     run: async (client) => {
       client.requireAuth();
-      // Canonical endpoint; falls back to portal-checkout state if the route differs.
       try {
         return await client.request('/api/stripe/create-portal-session', { method: 'POST', body: {} });
       } catch {
-        return { subscribed: 'unknown', detail: 'Could not confirm subscription — ask at https://trybiut.com/pricing', pricing: PUBLIC_URLS.pricing };
+        return { subscribed: 'unknown', detail: 'Could not confirm subscription', pricing: PUBLIC_URLS.pricing };
       }
     },
   },
   {
     name: 'trybiut_dashboard_taxes',
-    title: '📊 Tax dashboard',
+    title: 'Tax dashboard',
     auth: true,
-    description: 'Aggregated tax dashboard of the logged-in user. Requires login (+ subscription for full data).',
+    description: 'Aggregated tax dashboard of the logged-in user. Requires login (plus subscription for full data).',
     schema: {},
     run: async (client) => {
       client.requireAuth();
@@ -168,7 +165,7 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'trybiut_invoices_list',
-    title: '🧾 My invoices',
+    title: 'My invoices',
     auth: true,
     description: 'List invoices of the logged-in user. Requires login. Never accessible anonymously.',
     schema: { limit: z.number().int().min(1).max(100).default(20) },
@@ -180,7 +177,7 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'trybiut_movements_list',
-    title: '💸 My movements',
+    title: 'My movements',
     auth: true,
     description: 'List bank/income-expense movements of the logged-in user. Requires login.',
     schema: { limit: z.number().int().min(1).max(100).default(20) },
@@ -192,7 +189,7 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'trybiut_tax_history',
-    title: '🗂️ Tax history',
+    title: 'Tax history',
     auth: true,
     description: 'Filed tax forms history of the logged-in user. Requires login.',
     schema: {},
@@ -203,9 +200,9 @@ export const TOOLS: ToolDef[] = [
   },
   {
     name: 'trybiut_reports_taxes',
-    title: '📈 Tax report',
+    title: 'Tax report',
     auth: true,
-    description: 'Detailed tax report of the logged-in user. Requires login (+ subscription for full data).',
+    description: 'Detailed tax report of the logged-in user. Requires login (plus subscription for full data).',
     schema: {},
     run: async (client) => {
       client.requireAuth();

@@ -1,4 +1,4 @@
-/** Shared config — env only, no passwords are ever handled here. */
+/** Shared config — env only, passwords are never handled here. */
 export interface TrybiutConfig {
   baseUrl: string;
   apiToken?: string;
@@ -15,10 +15,16 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): TrybiutConfig 
   };
 }
 
+/** Real pages on trybiut.com (verified against pages/). */
 export const PUBLIC_URLS = {
-  register: 'https://trybiut.com/register',
-  login: 'https://trybiut.com/login',
-  apiTokens: 'https://trybiut.com/dashboard/api-tokens',
+  getStarted: 'https://trybiut.com/get-started',
+  login: 'https://trybiut.com/connect/login',
   pricing: 'https://trybiut.com/pricing',
-  docs: 'https://trybiut.com/docs',
+  developers: 'https://trybiut.com/developers',
+  dashboard: 'https://trybiut.com/dashboard',
 } as const;
+
+export const TOKEN_HELP =
+  'Get a token with the TryBiut CLI: `npx -y github:JMonde/trybiut-cli login` ' +
+  '(stores a local session, no dashboard page needed), then set TRYBIUT_API_TOKEN. ' +
+  'Create your account first at https://trybiut.com/get-started';
